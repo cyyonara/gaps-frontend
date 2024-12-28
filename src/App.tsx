@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button';
+import { Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 
 const App = () => {
   return (
-    <div className='text-red-500'>
-      <Button>G na Baks</Button>
-    </div>
+    <Routes>
+      <Route index element={<LandingPage />} />
+    </Routes>
   );
 };
 
