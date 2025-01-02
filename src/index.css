@@ -11,6 +11,9 @@ h4 {
 h3 {
   font-size: 35px;
 }
+h5 {
+  font-size: 30px;
+}
 @layer base {
   :root {
     --background: 0, 50%, 98%;

@@ -3,7 +3,7 @@ import { Link as ScrollLink } from "react-scroll";
 
 const Home = () => {
   return (
-    <div className="relative m-auto px-[8%]  h-[100vh] w-full flex-col">
+    <div className="relative m-auto px-[8%] h-[100vh] w-full flex-col">
       <div className="flex pt-[15%]">
         <div>
           <div>
@@ -34,9 +34,9 @@ const Home = () => {
 
         <div>{/* <div className="bg-primary w-[600px] h-[800px] blur-[350px]"></div> */}</div>
       </div>
-      <h3 className="absolute left-1/2 transform -translate-x-1/2 bottom-5 bg-primary mb-5 text-white font-medium  w-[80%] rounded-md p-10 flex justify-center">
-        Push Boundaries. Prove Excellence. Earn Your Certification.
-      </h3>
+      <h5 className="absolute left-1/2 transform -translate-x-1/2 bottom-5 bg-primary mb-5 text-white font-medium  w-[70%] rounded-md p-10 flex justify-center">
+        Designed for Excellence, Built with Care.
+      </h5>
     </div>
   );
 };

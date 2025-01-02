@@ -1,9 +1,37 @@
 import logo from "../../assets/icon.png";
+import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { FaUser } from "react-icons/fa";
 
 const Navigation = () => {
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  const controlNavbar = () => {
+    if (typeof window !== "undefined") {
+      if (window.scrollY > lastScrollY) {
+        setShowNav(false);
+      } else {
+        setShowNav(true);
+      }
+      setLastScrollY(window.scrollY);
+
+      setIsAtTop(window.scrollY === 0);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlNavbar);
+
+      return () => {
+        window.removeEventListener("scroll", controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
   const navLinks = [
     {
       href: "home",
@@ -13,10 +41,7 @@ const Navigation = () => {
       href: "aboutUs",
       label: "About Us",
     },
-    // {
-    //   href: "features",
-    //   label: "Features",
-    // },
+
     {
       href: "missionAndVision",
       label: "Mission & Vision",
@@ -25,7 +50,11 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center py-10">
+      <nav
+        className={` px-[8%] flex justify-between items-center py-8 transition-transform duration-300 w-full ${
+          showNav ? (isAtTop ? "" : "bg-white shadow-md") : "-translate-y-full"
+        } `}
+      >
         <RouterLink to="home" className="w-[100px]">
           <img src={logo} alt="gaps-logo" />
         </RouterLink>

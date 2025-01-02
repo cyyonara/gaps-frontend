@@ -4,10 +4,11 @@ import AboutUs from "@/components/landing-page/pages/AboutUs";
 import MissionAndVision from "@/components/landing-page/pages/MissionAndVision";
 import { Element } from "react-scroll";
 import MyTeam from "@/components/landing-page/pages/MyTeam";
+import Footer from "@/components/landing-page/pages/Footer";
 const LandingPage = () => {
   return (
     <div className="bg-background flex min-h-screen flex-col">
-      <header className="sticky top-0 m-auto w-full px-[8%]">
+      <header className="sticky z-[100] top-0 m-auto w-full">
         <Navigation />
       </header>
       <main className="flex-grow">
@@ -24,7 +25,7 @@ const LandingPage = () => {
           <MyTeam />
         </Element>
       </main>
-      <footer className="w-full py-10 px-[8%] bg-primary">footer</footer>
+      <Footer />
     </div>
   );
 };

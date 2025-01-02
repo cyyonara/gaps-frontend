@@ -1,5 +1,3 @@
-import mission from "../../../assets/mission.png";
-import vision from "../../../assets/vision.png";
 import MissionAndVisionCard from "../MissionAndVisionCard";
 
 const MissionAndVision = () => {
@@ -13,7 +11,7 @@ const MissionAndVision = () => {
     {
       title: "Our Vision",
       description:
-        "Our vision is to establish GAPS at Colegio de San Gabriel as a beacon of educational excellence where continuous professional development is seamlessly integrated into our academic framework. We aspire to create an environment where our educators are perpetually empowered to excel in their teaching roles, thereby fostering a culture of excellence and lifelong learning.",
+        "Our vision is to establish GAPS at Colegio de San Gabriel as a beacon of educational excellence where continuous professional development is seamlessly integrated into our academic framework. We aspire to create an environment where our educators are perpetually empowered to excel in their teaching roles, thereby fostering a culture o f excellence and lifelong learning.",
       icon: "vision",
     },
   ];
