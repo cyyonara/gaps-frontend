@@ -13,19 +13,21 @@ const AboutUs = () => {
       title: "Issuance of Certificates",
       description:
         "This feature ensures that certificates are issued to mentors once they have successfully passed their assessments, with a 7-week delay after the exam results are finalized. After this waiting period, mentors can access their digital certificates, which serve as official recognition of their achievements. The system streamlines the process, ensuring that certificates are delivered accurately and on time, following the necessary evaluation period.",
-      icon: "AiFillSafetyCertificate",
+      icon: "TbCertificate",
     },
     {
       title: "Certificate Legitimacy Verification",
       description:
         "This feature provides a quick and secure way to verify the authenticity of a certificate through a unique QR code. Scanning the QR code directs users to the soft copy of the certificate, where they can view and download it. This ensures that the certificate is legitimate and easily accessible, offering a seamless experience for mentors and employers alike. The QR code provides an added layer of security while giving mentors the convenience of downloading their certificate anytime.",
-      icon: "TbCertificate",
+      icon: "AiFillSafetyCertificate",
     },
   ];
 
   return (
-    <div className="h-[80vh] px-[8%] flex flex-col justify-center items-center">
-      <h3 className="font-bold ">Features Built for Mentors</h3>
+    <div className="h-[70vh] px-[8%] flex flex-col justify-center items-center">
+      <h3 className="font-bold pb-8">
+        GAPS' Features Built for <span className="text-primary">Mentors</span>
+      </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 justify-items-center">
         {features.map((feature) => (

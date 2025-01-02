@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link as ScrollLink } from "react-scroll";
 
 const Home = () => {
   return (
@@ -20,8 +21,12 @@ const Home = () => {
             </div>
             <div>
               <div className="flex space-x-5 mt-10">
-                <Button>Learn More</Button>
-                <Button variant="outline">Meet The Team</Button>
+                <ScrollLink to="aboutUs" smooth={true} duration={500}>
+                  <Button>Learn More</Button>
+                </ScrollLink>
+                <ScrollLink to="myTeam" smooth={true} duration={500}>
+                  <Button variant="outline">Meet The Team</Button>
+                </ScrollLink>
               </div>
             </div>
           </div>
