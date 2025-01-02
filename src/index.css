@@ -6,7 +6,10 @@
   font-family: "Outfit";
 }
 h4 {
-  font-size: 55px;
+  font-size: 50px;
+}
+h3 {
+  font-size: 30px;
 }
 @layer base {
   :root {
@@ -16,7 +19,7 @@ h4 {
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0, 90%, 38%;
+    --primary: 0 84% 38;
     --primary-foreground: 0 0% 98%;
     --secondary: 357, 77%, 74%;
     --secondary-foreground: 0 0% 9%;

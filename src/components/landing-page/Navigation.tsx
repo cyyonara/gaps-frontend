@@ -13,10 +13,10 @@ const Navigation = () => {
       href: "aboutUs",
       label: "About Us",
     },
-    {
-      href: "features",
-      label: "Features",
-    },
+    // {
+    //   href: "features",
+    //   label: "Features",
+    // },
     {
       href: "missionAndVision",
       label: "Mission & Vision",
@@ -25,7 +25,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center py-5">
+      <nav className="flex justify-between items-center py-10">
         <RouterLink to="home" className="w-[100px]">
           <img src={logo} alt="gaps-logo" />
         </RouterLink>
@@ -38,13 +38,14 @@ const Navigation = () => {
                   smooth={true}
                   duration={500}
                   key={href}
-                  className="cursor-pointer text-sm font-medium"
+                  className="cursor-pointer text-sm font-normal"
                 >
                   {label}
                 </ScrollLink>
               ))}
-              <div className="py-2 px-2 rounded-full bg-primary">
-                <FaUser className="text-background" />
+              <div className="py-2 px-5 text-sm text-white flex items-center gap-x-2 rounded-full bg-primary">
+                <FaUser size={12} className="text-background" />
+                Login
               </div>
             </div>
           </div>

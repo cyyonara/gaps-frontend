@@ -17,13 +17,11 @@ const LandingPage = () => {
         <Element name="aboutUs">
           <AboutUs />
         </Element>
-        <Element name="features">
-          <Features />
-        </Element>
         <Element name="missionAndVision">
           <MissionAndVision />
         </Element>
       </main>
+      <footer className="w-full py-10 px-[8%] bg-primary">footer</footer>
     </div>
   );
 };
