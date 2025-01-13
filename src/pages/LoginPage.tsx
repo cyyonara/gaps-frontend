@@ -37,20 +37,21 @@ const LoginPage = () => {
       className="w-full h-[100vh] bg-background flex flex-col justify-center items-center bg-cover bg-center bg-white"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <Card className=" border-none relative flex justify-center items-center flex-col bg-white bg-opacity-30 backdrop-filter backdrop-blur-md p-5 rounded-md shadow-xl">
+      <Card className="w-[20%] border-none relative flex justify-center items-center flex-col bg-white bg-opacity-30 backdrop-filter backdrop-blur-md p-5 rounded-md shadow-xl">
         <div className="absolute top-[-7%] flex justify-center items-center p-3 bg-primary rounded-full">
           <FaUser size={28} className="text-white" />
         </div>
 
+       
         <CardHeader className="flex flex-col items-center leading-tight">
           <CardTitle className="font-semibold text-[20px]"> Welcome To GAPS!</CardTitle>
           <CardDescription className="text-sm text-black">Login to your account.</CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="flex-1">
           <form id="loginForm" onSubmit={handleSubmit(handleLogin)}>
-            <div className="flex flex-col space-y-4 items-start">
-              <div>
+            <div className="flex] w-full flex-col space-y-4 items-start flex-1">
+              <div className="w-full">
                 <div className="relative flex-1 flex items-center pl-7 border border-black rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary">
                   <div className="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                     <FaEnvelope />
