@@ -1,6 +1,7 @@
 import logo from "../../assets/icon.png";
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { FaUser } from "react-icons/fa";
 
@@ -72,10 +73,12 @@ const Navigation = () => {
                   {label}
                 </ScrollLink>
               ))}
-              <div className="py-2 px-5 text-sm text-white flex items-center gap-x-2 rounded-full bg-primary">
-                <FaUser size={12} className="text-background" />
-                Login
-              </div>
+              <Link to="/login">
+                <div className="py-2 px-5 text-sm text-white flex items-center gap-x-2 rounded-full bg-primary">
+                  <FaUser size={12} className="text-background" />
+                  Login
+                </div>
+              </Link>
             </div>
           </div>
         </div>
