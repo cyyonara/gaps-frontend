@@ -73,7 +73,7 @@ const Navigation = () => {
                   {label}
                 </ScrollLink>
               ))}
-              <Link to="/login">
+              <Link to="/login" className="cursor-pointer">
                 <div className="py-2 px-5 text-sm text-white flex items-center gap-x-2 rounded-full bg-primary">
                   <FaUser size={12} className="text-background" />
                   Login
