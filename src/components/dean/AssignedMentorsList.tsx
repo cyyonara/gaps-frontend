@@ -9,7 +9,6 @@ import {
 } from "../ui/dialog";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
-import SearchBar from "../shared/SearchBar";
 
 const mockData = [
   {
@@ -47,9 +46,7 @@ const AssignedMentorsList = () => {
           <DialogDescription>View list of assigned mentors</DialogDescription>
         </DialogHeader>
 
-        <div className="flex justify-end mt-5">
-          <SearchBar placeholder="Search Mentor" />
-        </div>
+        <div className="flex justify-end mt-5"></div>
         <Table>
           <TableHeader>
             <TableRow className="bg-gray-200">
