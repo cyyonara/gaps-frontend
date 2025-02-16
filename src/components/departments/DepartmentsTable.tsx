@@ -23,125 +23,105 @@ import {
 } from "@/components/ui/pagination";
 import { Button } from "../ui/button";
 
-const columns = [
-  "Name",
-  "Description",
-  "Assessments",
-  "Department",
-  "Created At",
-  "Created By",
-  "Updated At",
-  "Updated By",
-];
+const columns = ["Name", "Dean", "Courses", "Created At", "Created By", "Updated At", "Updated By"];
 
-const courses = [
+const departments = [
   {
-    name: "Course 1",
-    description: "This is a sample course",
-    department: "Computer Science",
-    createdAt: "2022-01-01",
+    name: "Computer Science",
+    dean: "Dr. Jane Smith",
+    coursesCount: 20,
+    createdAt: "2020-01-01",
     createdBy: "John Doe",
     updatedAt: "2022-01-15",
     updatedBy: "Jane Doe",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 2",
-    description: "This is another sample course",
-    department: "Mathematics",
-    createdAt: "2022-02-01",
+    name: "Mathematics",
+    dean: "Dr. John Taylor",
+    coursesCount: 15,
+    createdAt: "2020-02-01",
     createdBy: "Bob Smith",
     updatedAt: "2022-02-20",
     updatedBy: "Alice Johnson",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 3",
-    description: "This is yet another sample course",
-    department: "Engineering",
-    createdAt: "2022-03-01",
+    name: "Engineering",
+    dean: "Dr. Maria Rodriguez",
+    coursesCount: 25,
+    createdAt: "2020-03-01",
     createdBy: "Mike Brown",
     updatedAt: "2022-03-25",
     updatedBy: "Emily Davis",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 4",
-    description: "Introduction to programming",
-    department: "Computer Science",
-    createdAt: "2022-04-01",
+    name: "Physics",
+    dean: "Dr. David Lee",
+    coursesCount: 10,
+    createdAt: "2020-04-01",
     createdBy: "David Lee",
     updatedAt: "2022-04-15",
     updatedBy: "Sophia Kim",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 5",
-    description: "Data structures and algorithms",
-    department: "Computer Science",
-    createdAt: "2022-05-01",
+    name: "Biology",
+    dean: "Dr. Emily Chen",
+    coursesCount: 18,
+    createdAt: "2020-05-01",
     createdBy: "Kevin White",
     updatedAt: "2022-05-20",
     updatedBy: "Olivia Martin",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 6",
-    description: "Calculus I",
-    department: "Mathematics",
-    createdAt: "2022-06-01",
+    name: "Chemistry",
+    dean: "Dr. James Davis",
+    coursesCount: 22,
+    createdAt: "2020-06-01",
     createdBy: "James Davis",
     updatedAt: "2022-06-15",
     updatedBy: "Rebecca Brown",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 7",
-    description: "Introduction to physics",
-    department: "Physics",
-    createdAt: "2022-07-01",
+    name: "Economics",
+    dean: "Dr. Sarah Taylor",
+    coursesCount: 12,
+    createdAt: "2020-07-01",
     createdBy: "Sarah Taylor",
     updatedAt: "2022-07-15",
     updatedBy: "William Thompson",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 8",
-    description: "Computer networks",
-    department: "Computer Science",
-    createdAt: "2022-08-01",
-    createdBy: "James Davis",
-    updatedAt: "2022-08-20",
-    updatedBy: "Rebecca Brown",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
-  },
-  {
-    name: "Course 9",
-    description: "Database systems",
-    department: "Computer Science",
-    createdAt: "2022-09-01",
+    name: "Business Administration",
+    dean: "Dr. Robert Johnson",
+    coursesCount: 28,
+    createdAt: "2020-08-01",
     createdBy: "Robert Johnson",
-    updatedAt: "2022-09-25",
+    updatedAt: "2022-08-20",
     updatedBy: "Amanda Garcia",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
   },
   {
-    name: "Course 10",
-    description: "Artificial intelligence",
-    department: "Computer Science",
-    createdAt: "2022-10-01",
+    name: "Environmental Science",
+    dean: "Dr. Richard Lee",
+    coursesCount: 8,
+    createdAt: "2020-09-01",
     createdBy: "Richard Lee",
-    updatedAt: "2022-10-15",
+    updatedAt: "2022-09-25",
     updatedBy: "Elizabeth Kim",
-    assessmentCount: Math.floor(Math.random() * 10) + 1,
+  },
+  {
+    name: "Psychology",
+    dean: "Dr. Elizabeth Hall",
+    coursesCount: 20,
+    createdAt: "2020-10-01",
+    createdBy: "Elizabeth Hall",
+    updatedAt: "2022-10-15",
+    updatedBy: "Michael Brown",
   },
 ];
-
-const CoursesTable = () => {
+const DepartmentsTable = () => {
   return (
     <div className="flex flex-col gap-y-10">
       <div className="flex items-center justify-between">
-        <CustomInput icon={Search} placeholder="Search course..." />
+        <CustomInput icon={Search} placeholder="Search department..." />
         <div className="flex items-center gap-x-8">
           <div className="flex items-center gap-x-4">
             <span className="text-muted-foreground">Sort By:</span>
@@ -177,16 +157,15 @@ const CoursesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.map((course) => (
-            <TableRow key={course.name} className="h-16 text-center">
-              <TableCell>{course.name}</TableCell>
-              <TableCell>{course.description}</TableCell>
-              <TableCell>{course.assessmentCount}</TableCell>
-              <TableCell>{course.department}</TableCell>
-              <TableCell>{moment(course.createdAt).format("LL")}</TableCell>
-              <TableCell>{course.createdBy}</TableCell>
-              <TableCell>{moment(course.updatedAt).format("LL")}</TableCell>
-              <TableCell>{course.updatedBy}</TableCell>
+          {departments.map((department) => (
+            <TableRow key={department.name} className="h-16 text-center">
+              <TableCell>{department.name}</TableCell>
+              <TableCell>{department.dean}</TableCell>
+              <TableCell>{department.coursesCount}</TableCell>
+              <TableCell>{moment(department.createdAt).format("LL")}</TableCell>
+              <TableCell>{department.createdBy}</TableCell>
+              <TableCell>{moment(department.updatedAt).format("LL")}</TableCell>
+              <TableCell>{department.updatedBy}</TableCell>
               <TableCell>
                 <Button variant="ghost" className="size-9">
                   <Ellipsis />
@@ -230,4 +209,4 @@ const CoursesTable = () => {
   );
 };
 
-export default CoursesTable;
+export default DepartmentsTable;

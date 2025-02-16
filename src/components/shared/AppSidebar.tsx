@@ -1,4 +1,4 @@
-import { LayoutDashboard, Book } from "lucide-react";
+import { LayoutDashboard, Book, Building } from "lucide-react";
 import { NavMain } from "@/components/sidebar/NavMain";
 import { NavUser } from "@/components/sidebar/NavUser";
 import {
@@ -25,6 +25,11 @@ const data = {
       isActive: true,
     },
     {
+      title: "Departments",
+      url: "/departments",
+      icon: Building,
+    },
+    {
       title: "Courses",
       url: "/courses",
       icon: Book,
@@ -34,7 +39,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} className="shadow-xl bg-black">
       <SidebarHeader>
         <div className="flex items-center gap-x-2 justify-center py-4">
           <img src={gapsIcon} alt="gaps-icon" className="w-[100px]" />

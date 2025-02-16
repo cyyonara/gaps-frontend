@@ -25,8 +25,6 @@ export function NavMain({
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location);
-
   return (
     <SidebarGroup>
       <SidebarMenu>

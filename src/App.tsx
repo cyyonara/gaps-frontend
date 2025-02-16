@@ -8,6 +8,7 @@ import RootLayout from "./components/layouts/RootLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import { useEffect } from "react";
 import useTheme from "./hooks/states/useTheme";
+import Departments from "./pages/Departments";
 
 const App = () => {
   const { theme } = useTheme();
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/dean/profile" element={<Profile />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/departments" element={<Departments />} />
       </Route>
     </Routes>
   );
