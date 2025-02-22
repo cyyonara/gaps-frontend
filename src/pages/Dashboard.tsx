@@ -3,6 +3,7 @@ import NumberOfUserChart from "@/components/dashboard/AssessmentChart";
 import RecentActivityCard from "@/components/dashboard/RecentActivityCard";
 import DepartmentsChart from "@/components/dashboard/DepartmentsChart";
 import DeanUpdateChart from "@/components/dashboard/DeanUpdateChart";
+import ResultChart from "@/components/dashboard/ResultChart";
 
 const Dashboard = () => {
   return (
@@ -22,10 +23,11 @@ const Dashboard = () => {
         </div>
 
         <div className="flex justify-start w-full gap-x-8">
-          <div>
+          <div className="flex flex-col gap-y-8">
             <DeanUpdateChart />
+            <ResultChart />
           </div>
-          <div>
+          <div className="flex-1 ">
             <DepartmentsChart />
           </div>
         </div>
