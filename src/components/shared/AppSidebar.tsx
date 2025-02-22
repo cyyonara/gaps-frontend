@@ -1,4 +1,4 @@
-import { LayoutDashboard, Book, Building } from "lucide-react";
+import { LayoutDashboard, Book, Building, NotepadText, Users } from "lucide-react";
 import { NavMain } from "@/components/sidebar/NavMain";
 import { NavUser } from "@/components/sidebar/NavUser";
 import {
@@ -9,6 +9,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import gapsIcon from "@/assets/icon.png";
+import { title } from "process";
+import { url } from "inspector";
 
 // This is sample data.
 const data = {
@@ -34,14 +36,24 @@ const data = {
       url: "/courses",
       icon: Book,
     },
+    {
+      title: "Assessments",
+      url: "/assessments",
+      icon: NotepadText,
+    },
+    {
+      title: "Users",
+      url: "/users",
+      icon: Users,
+    },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props} className="shadow-xl bg-black">
+    <Sidebar collapsible="icon" {...props} className="bg-black shadow-xl">
       <SidebarHeader>
-        <div className="flex items-center gap-x-2 justify-center py-4">
+        <div className="flex items-center gap-x-5 py-4 pl-2">
           <img src={gapsIcon} alt="gaps-icon" className="w-[100px]" />
         </div>
       </SidebarHeader>

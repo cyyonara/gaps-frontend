@@ -2,13 +2,13 @@ import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import Courses from "./pages/Courses";
-import Assessments from "./pages/dean/Assessments";
-import Profile from "./pages/dean/Profile";
+import Assessments from "./pages/Assessments";
 import RootLayout from "./components/layouts/RootLayout";
-import Dashboard from "./pages/admin/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
 import useTheme from "./hooks/states/useTheme";
 import Departments from "./pages/Departments";
+import Users from "./pages/Users";
 
 const App = () => {
   const { theme } = useTheme();
@@ -26,11 +26,12 @@ const App = () => {
       <Route index element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route element={<RootLayout />}>
-        <Route path="/dean/assessments" element={<Assessments />} />
-        <Route path="/dean/profile" element={<Profile />} />
+        <Route path="/assessments" element={<Assessments />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/departments" element={<Departments />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users" element={<Users />} />
       </Route>
     </Routes>
   );
