@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
+import { addUserSchema } from "./helpers/validations";
 
 // API
 interface IResponse<T> {
@@ -106,6 +107,8 @@ interface IAddQuestionFormValues {
 // USER
 type TUserRole = "mentor" | "dean" | "admin";
 
+interface IAddUserFormValues extends z.infer<typeof addUserSchema> {}
+
 interface IUser {
   _id: string;
   email: string;
@@ -129,18 +132,15 @@ interface IPaginatedUsers extends IPagination {
 }
 
 interface IGetUsersQueryParams {
-  keyword?: string;
+  search?: string;
+  page: ?number;
   limit?: number;
-  filterBy?: "none" | "department" | "role";
-  department?: string;
-  role?: TUserRole;
 }
 
 // AUDIT FIELDS
 interface IAuditFields {
   createdAt: Date;
   updatedAt: Date;
-
   createdBy: IUser | null;
   updatedBy: IUser | null;
 }

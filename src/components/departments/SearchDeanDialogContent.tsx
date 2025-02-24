@@ -19,12 +19,11 @@ interface Props {
 }
 
 const SearchDeanDialogContent = ({ selectedDean, closeDialog, handleSelectDean }: Props) => {
-  const [keyword, setKeyword] = useState("");
+  const [search, setSearch] = useState("");
   const { data, isLoading, isError, isSuccess } = useGetUsers({
-    keyword,
+    search,
+    page: 1,
     limit: 5,
-    filterBy: "role",
-    role: "dean",
   });
 
   return (
@@ -39,14 +38,14 @@ const SearchDeanDialogContent = ({ selectedDean, closeDialog, handleSelectDean }
         <CustomInput
           icon={Search}
           iconPosition="left"
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Search a Dean"
         />
         <div className="space-y-3">
-          {isSuccess && data.pages[0].users.length > 0 ? (
+          {isSuccess && (
             <>
-              {data.pages.map((page) =>
-                page.users.map((user) => (
+              {data.users.length! == 0 ? (
+                data.users.map((user) => (
                   <div
                     key={user._id}
                     className="flex gap-x-2 items-center w-full justify-start p-2 rounded hover:bg-accent hover:text-accent-foreground"
@@ -68,11 +67,11 @@ const SearchDeanDialogContent = ({ selectedDean, closeDialog, handleSelectDean }
                     </div>
                     <Checkbox checked={selectedDean?._id === user._id} className="ml-auto" />
                   </div>
-                )),
+                ))
+              ) : (
+                <div className="flex w-full p-2 rounded">No users found.</div>
               )}
             </>
-          ) : (
-            <div className="flex w-full p-2 rounded">No users found.</div>
           )}
         </div>
       </div>

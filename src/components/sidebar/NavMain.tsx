@@ -34,7 +34,8 @@ export function NavMain({
               tooltip={item.title}
               onClick={() => navigate(item.url)}
               className={clsx({
-                "bg-primary text-primary-foreground": location.pathname.includes(item.url),
+                "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground":
+                  location.pathname.includes(item.url),
               })}
             >
               {item.icon && <item.icon />}

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 * {
+  font-family: "Nunito";
 }
 
 h1 {

@@ -7,7 +7,7 @@ const Courses = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between items-center mb-12">
+      <div className="mb-12 flex items-center justify-between">
         <div className="flex flex-col gap-y-1">
           <div className="flex items-center gap-x-3">
             <h1 className="text-3xl font-bold text-primary">Courses</h1>

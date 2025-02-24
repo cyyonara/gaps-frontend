@@ -45,13 +45,13 @@ const SearchDepartmentDialog = ({
           className={cn("w-full justify-between", !selectedDepartment && "text-muted-foreground")}
           disabled={selectDisabled}
         >
-          {selectedDepartment ? selectedDepartment.name : "Select Department..."}
+          {selectedDepartment ? selectedDepartment.name : "Choose department"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Search Department</DialogTitle>
+          <DialogTitle>Search department</DialogTitle>
           <DialogDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </DialogDescription>
@@ -60,7 +60,7 @@ const SearchDepartmentDialog = ({
           <CustomInput
             icon={Search}
             iconPosition="left"
-            placeholder="Search a Department"
+            placeholder="Search department"
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="space-y-3">

@@ -73,7 +73,7 @@ const AddDepartmentDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Department</DialogTitle>
+          <DialogTitle>Add department</DialogTitle>
           <DialogDescription>Add a new department to the system</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -83,7 +83,7 @@ const AddDepartmentDialog = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Department name</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Enter department name" />
                   </FormControl>

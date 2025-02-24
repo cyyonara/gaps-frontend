@@ -8,6 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,9 +74,9 @@ const AddCourseDialog = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Course name</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} placeholder="Enter course name..." />
+                    <Input {...field} disabled={isPending} placeholder="Enter course name" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,6 +104,11 @@ const AddCourseDialog = () => {
               )}
             />
             <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button type="submit" disabled={isPending}>
                 Add
               </Button>

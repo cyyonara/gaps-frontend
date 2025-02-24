@@ -17,18 +17,15 @@ import {
 import CustomButton from "@/components/common/CustomButton";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
-import { ICourseWithAudit, IDepartmentWithAudit } from "@/types";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchParams } from "react-router-dom";
-import React, { useState } from "react";
 import {
-  rowsPerPageOptions,
   getPage,
   getRowsPerPage,
-  sortingOptions,
   getSortingOption,
+  rowsPerPageOptions,
 } from "@/utils/paginationUtils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useDebounce } from "@/hooks/states/useDebounce";
+import useGetUsers from "@/hooks/api/useGetUsers";
 import {
   ColumnDef,
   flexRender,
@@ -37,32 +34,80 @@ import {
   PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
+import { useState } from "react";
+import { IDepartmentWithAudit, IUserWithAudit } from "@/types";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useDebounce } from "@/hooks/states/useDebounce";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import SearchCoursesInput from "@/components/courses/SearchCourseInput";
-import useGetCourses from "@/hooks/api/useGetCourses";
+import { Badge, BadgeProps } from "@/components/ui/badge";
+import SearchUserInput from "@/components/users/SearchUserInput";
 
-const columns: ColumnDef<ICourseWithAudit>[] = [
+const columns: ColumnDef<IUserWithAudit>[] = [
   {
-    accessorKey: "name",
-    header: "Course name",
+    accessorKey: "profileImage",
+    header: "",
+    cell: ({ row }) => {
+      const firstName = row.original.firstName;
+      const lastName = row.original.lastName;
+
+      const avatarFallback = firstName[0] + lastName[0];
+      const profileImage = row.original.profileImage as string;
+
+      return (
+        <Avatar className="size-8">
+          <AvatarImage src={profileImage} />
+          <AvatarFallback className="capitalize">{avatarFallback}</AvatarFallback>
+        </Avatar>
+      );
+    },
   },
-
   {
-    accessorKey: "assessmentCount",
-    header: "Assessments",
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "fullname",
+    header: "Full Name",
   },
   {
     accessorKey: "department.name",
     header: "Department",
+    cell: ({ row }) => (row.original.department ? row.original.department.name : "--"),
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => {
+      const role = row.original.role;
+
+      let badgeVariant: BadgeProps["variant"] = "default";
+
+      if (role === "admin") {
+        badgeVariant = "outline";
+      }
+
+      if (role === "dean") {
+        badgeVariant = "secondary";
+      }
+
+      if (role === "mentor") {
+        badgeVariant = "default";
+      }
+
+      return (
+        <Badge className="capitalize" variant={badgeVariant}>
+          {role}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "createdAt",
@@ -82,7 +127,7 @@ const columns: ColumnDef<ICourseWithAudit>[] = [
               <Avatar className="size-8">
                 <AvatarImage src={createdBy?.profileImage || ""} />
                 <AvatarFallback className="capitalize">
-                  {createdBy!.firstName[0] + createdBy!.lastName[0]}
+                  {createdBy?.firstName[0] + createdBy?.lastName[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">
@@ -151,10 +196,10 @@ const columns: ColumnDef<ICourseWithAudit>[] = [
 ];
 
 interface Props {
-  setTotalCourses: (total: number) => void;
+  setTotalUsers: (total: number) => void;
 }
 
-const CoursesTable = ({ setTotalCourses }: Props) => {
+const UsersTable = ({ setTotalUsers }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   let totalPages = 0;
 
@@ -165,19 +210,20 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
   const rowsPerPage = getRowsPerPage(searchParams.get("limit"));
   const sortBy = getSortingOption(searchParams.get("sortBy"));
 
-  const { data, isLoading, isSuccess, isError, isFetching } = useGetCourses({
+  const { data, isLoading, isSuccess, isError, isFetching } = useGetUsers({
     search: debounceValue,
     page,
     limit: rowsPerPage,
-    sortBy,
   });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: rowsPerPage,
   });
 
+  console.log(data);
+
   const table = useReactTable({
-    data: isSuccess ? data.courses : [],
+    data: isSuccess ? data.users : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -189,7 +235,7 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
   let paginationButtons: React.ReactNode;
 
   if (isSuccess) {
-    setTotalCourses(data.pagination.totalItems);
+    setTotalUsers(data.pagination.totalItems);
     totalPages = data.pagination.totalPages;
     paginationButtons = (
       <>
@@ -241,32 +287,17 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
   return (
     <div className="flex flex-col gap-y-10">
       <div className="flex items-center justify-between">
-        <SearchCoursesInput />
-        <div className="flex items-center gap-x-6">
+        <SearchUserInput />
+        <div className="flex items-center gap-x-8">
           <div className="flex items-center gap-x-2">
-            <span className="whitespace-nowrap">Sort By</span>
-            <Select
-              disabled={isLoading || isError || isFetching}
-              value={sortBy}
-              onValueChange={(value) => {
-                table.setPageIndex(0);
-                setSearchParams({
-                  search: searchParams.get("search") || "",
-                  page: "1",
-                  limit: searchParams.get("limit") || "10",
-                  sortBy: value,
-                });
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Sort departments" />
+            <span className="text-muted-foreground">Sort By</span>
+            <Select defaultValue="name" disabled={isLoading}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort course" />
               </SelectTrigger>
               <SelectContent>
-                {sortingOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
+                <SelectItem value="name">Name (A-Z)</SelectItem>
+                <SelectItem value="date">Name (Z-A)</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -274,9 +305,7 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
             <CustomButton variant="outline" icon={Download}>
               Download
             </CustomButton>
-            <CustomButton variant="outline" icon={FileUp}>
-              Export
-            </CustomButton>
+            <CustomButton icon={FileUp}>Export</CustomButton>
           </div>
         </div>
       </div>
@@ -302,12 +331,7 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header, i) => (
-                  <TableHead
-                    key={header.id}
-                    className={cn({
-                      "text-center": i === 1,
-                    })}
-                  >
+                  <TableHead key={header.id} className={cn({})}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -325,12 +349,7 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
                   className="h-16"
                 >
                   {row.getVisibleCells().map((cell, i) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn({
-                        "text-center": i === 1,
-                      })}
-                    >
+                    <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -386,4 +405,4 @@ const CoursesTable = ({ setTotalCourses }: Props) => {
   );
 };
 
-export default CoursesTable;
+export default UsersTable;

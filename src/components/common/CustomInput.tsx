@@ -16,9 +16,10 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
       <div className={cn("relative flex items-center", className)}>
         {iconPosition === "left" && Icon && (
           <Button
+            type="button"
             variant="ghost"
             size="icon"
-            className="absolute left-2 pointer-events-none"
+            className="absolute left-2 hover:bg-transparent"
             onClick={onIconClick}
           >
             <Icon className="w-5 h-5" />
@@ -26,15 +27,20 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
         )}
         <Input
           ref={ref}
-          className={cn(
-            "w-full px-10",
-            iconPosition === "left" && "pl-10",
-            iconPosition === "right" && "pr-10",
-          )}
+          className={cn("w-full", {
+            "pl-10": iconPosition === "left" && Icon !== undefined,
+            "pr-10": iconPosition === "right" && Icon !== undefined,
+          })}
           {...props}
         />
         {iconPosition === "right" && Icon && (
-          <Button variant="ghost" size="icon" className="absolute right-2" onClick={onIconClick}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 hover:bg-transparent"
+            onClick={onIconClick}
+          >
             <Icon className="w-5 h-5" />
           </Button>
         )}

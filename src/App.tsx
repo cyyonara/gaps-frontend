@@ -1,12 +1,13 @@
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "@/pages/LandingPage";
 import Courses from "@/pages/Courses";
 import Assessments from "@/pages/Assessments";
 import RootLayout from "@/components/layouts/RootLayout";
-import Dashboard from "@/pages/admin/Dashboard";
-import { useEffect } from "react";
+import Dashboard from "@/pages/Dashboard";
 import useTheme from "@/hooks/states/useTheme";
 import Departments from "@/pages/Departments";
+import Users from "@/pages/Users";
 import Login2 from "@/pages/Login2";
 import AddAssessment from "@/pages/AddAssessment";
 
@@ -26,16 +27,16 @@ const App = () => {
       <Route index element={<LandingPage />} />
       <Route path="login" element={<Login2 />} />
       <Route element={<RootLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route path="/courses" element={<Courses />} />
-
-        <Route path="/departments" element={<Departments />} />
-
         <Route path="/assessments/*">
           <Route index element={<Assessments />} />
           <Route path="add" element={<AddAssessment />} />
         </Route>
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/courses" element={<Courses />} />
+
+        <Route path="/departments" element={<Departments />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users" element={<Users />} />
       </Route>
     </Routes>
   );

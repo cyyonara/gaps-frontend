@@ -64,7 +64,7 @@ const columns: ColumnDef<IDepartmentWithAudit>[] = [
       return (
         <>
           {dean ? (
-            <div className="flex items-center gap-x-3 justify-center">
+            <div className="flex items-center gap-x-3">
               <Avatar className="size-8">
                 <AvatarImage src={dean?.profileImage || ""} />
                 <AvatarFallback className="capitalize">
@@ -101,7 +101,7 @@ const columns: ColumnDef<IDepartmentWithAudit>[] = [
       return (
         <>
           {createdBy ? (
-            <div className="flex items-center gap-x-3 justify-center">
+            <div className="flex items-center gap-x-3">
               <Avatar className="size-8">
                 <AvatarImage src={createdBy?.profileImage || ""} />
                 <AvatarFallback className="capitalize">
@@ -134,7 +134,7 @@ const columns: ColumnDef<IDepartmentWithAudit>[] = [
       return (
         <>
           {updatedBy ? (
-            <div className="flex items-center gap-x-3 justify-center">
+            <div className="flex items-center gap-x-3">
               <Avatar className="size-8">
                 <AvatarImage src={updatedBy?.profileImage || ""} />
                 <AvatarFallback className="capitalize">
@@ -269,7 +269,7 @@ const DepartmentsTable = ({ setTotalDepartments }: Props) => {
         <SearchDepartmentInput />
         <div className="flex items-center gap-x-6">
           <div className="flex items-center gap-x-2">
-            <span className="text-muted-foreground whitespace-nowrap">Sort By:</span>
+            <span className="whitespace-nowrap">Sort by</span>
             <Select
               disabled={isLoading || isError || isFetching}
               value={sortBy}
@@ -332,7 +332,7 @@ const DepartmentsTable = ({ setTotalDepartments }: Props) => {
                   <TableHead
                     key={header.id}
                     className={cn({
-                      "text-center": i !== 0,
+                      "text-center": i === 2,
                     })}
                   >
                     {header.isPlaceholder
@@ -355,7 +355,7 @@ const DepartmentsTable = ({ setTotalDepartments }: Props) => {
                     <TableCell
                       key={cell.id}
                       className={cn({
-                        "text-center": i !== 0,
+                        "text-center": i === 2,
                       })}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -1,22 +1,15 @@
-import {
-  useInfiniteQuery,
-  QueryFunction,
-  InfiniteData,
-  UseInfiniteQueryResult,
-} from "@tanstack/react-query";
+import { useQuery, QueryFunction, UseQueryResult } from "@tanstack/react-query";
 import api from "@/config/axios";
 import { IGetUsersQueryParams, IPaginatedUsers, IRequestError, IResponse } from "@/types";
 
 type TMutationResponse = IResponse<IPaginatedUsers>;
 
-const getUsers: QueryFunction<IPaginatedUsers, [string, IGetUsersQueryParams], number> = async ({
-  pageParam,
+const getUsers: QueryFunction<IPaginatedUsers, [string, IGetUsersQueryParams]> = async ({
   queryKey,
 }) => {
-  const { department, filterBy, keyword, limit, role } = queryKey[1];
-
+  const { search, page, limit } = queryKey[1];
   const response = await api.get<TMutationResponse>(
-    `/api/users?keyword=${keyword}&page=${pageParam}&limit=${limit}&filterBy=${filterBy}&role=${role}&department=${department}`,
+    `/api/users?search=${search}&page=${page}&limit=${limit}`,
   );
 
   return response.data.data;
@@ -24,14 +17,11 @@ const getUsers: QueryFunction<IPaginatedUsers, [string, IGetUsersQueryParams], n
 
 const useGetUsers = (
   params: IGetUsersQueryParams,
-): UseInfiniteQueryResult<InfiniteData<IPaginatedUsers>, IRequestError> => {
-  return useInfiniteQuery({
+): UseQueryResult<IPaginatedUsers, IRequestError> => {
+  return useQuery({
     queryKey: ["users", params],
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.pagination.nextPage;
-    },
     queryFn: getUsers,
+    placeholderData: (previousData) => previousData,
   });
 };
 

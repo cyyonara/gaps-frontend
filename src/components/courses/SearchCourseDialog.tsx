@@ -27,8 +27,8 @@ const SearchCourseDialog = ({
   selectDisabled = false,
 }: Props) => {
   const [isSearchCourseDialogOpen, setIsSearchCourseDialogOpen] = useState<boolean>(false);
-  const [keyword, setKeyword] = useState<string>("");
-  const { data, isLoading, isSuccess } = useGetCourses({ keyword, limit: 5 });
+  const [search, setSearch] = useState<string>("");
+  const { data, isLoading, isSuccess } = useGetCourses({ search, limit: 5, page: 1, sortBy: "" });
 
   return (
     <Dialog open={isSearchCourseDialogOpen} onOpenChange={setIsSearchCourseDialogOpen}>
@@ -40,13 +40,13 @@ const SearchCourseDialog = ({
           className={cn("w-full justify-between", !selectedCourse && "text-muted-foreground")}
           disabled={selectDisabled}
         >
-          {selectedCourse ? selectedCourse.name : "Select Course..."}
+          {selectedCourse ? selectedCourse.name : "Choose course"}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Search Course</DialogTitle>
+          <DialogTitle>Search course</DialogTitle>
           <DialogDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </DialogDescription>
@@ -56,30 +56,28 @@ const SearchCourseDialog = ({
             icon={Search}
             iconPosition="left"
             placeholder="Search a Course"
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <div className="space-y-3">
             {isSuccess && (
               <>
-                {data.pages[0].courses.length > 0 ? (
-                  data.pages.map((page) =>
-                    page.courses.map((course) => (
-                      <div
-                        key={course._id}
-                        className="flex gap-x-2 items-center w-full justify-start p-2 rounded hover:bg-accent hover:text-accent-foreground"
-                        onClick={() => {
-                          handleSelectCourse(course);
-                          setIsSearchCourseDialogOpen(false);
-                        }}
-                      >
-                        <span className="text-sm">{course.name}</span>
-                        <Checkbox
-                          className="ml-auto"
-                          checked={selectedCourse !== null && selectedCourse._id === course._id}
-                        />
-                      </div>
-                    )),
-                  )
+                {data.courses.length > 0 ? (
+                  data.courses.map((course) => (
+                    <div
+                      key={course._id}
+                      className="flex gap-x-2 items-center w-full justify-start p-2 rounded hover:bg-accent hover:text-accent-foreground"
+                      onClick={() => {
+                        handleSelectCourse(course);
+                        setIsSearchCourseDialogOpen(false);
+                      }}
+                    >
+                      <span className="text-sm">{course.name}</span>
+                      <Checkbox
+                        className="ml-auto"
+                        checked={selectedCourse !== null && selectedCourse._id === course._id}
+                      />
+                    </div>
+                  ))
                 ) : (
                   <div className="flex w-full p-2 rounded">No courses found.</div>
                 )}
