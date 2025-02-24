@@ -15,14 +15,19 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
     return (
       <div className={cn("relative flex items-center", className)}>
         {iconPosition === "left" && Icon && (
-          <Button variant="ghost" size="icon" className="absolute left-2" onClick={onIconClick}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute left-2 pointer-events-none"
+            onClick={onIconClick}
+          >
             <Icon className="w-5 h-5" />
           </Button>
         )}
         <Input
           ref={ref}
           className={cn(
-            "w-full px-10", // Adjust padding to avoid overlap
+            "w-full px-10",
             iconPosition === "left" && "pl-10",
             iconPosition === "right" && "pr-10",
           )}

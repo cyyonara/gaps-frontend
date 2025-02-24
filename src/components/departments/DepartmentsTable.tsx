@@ -6,132 +6,292 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import CustomInput from "../common/CustomInput";
-import { Search, Download, FileUp, Ellipsis } from "lucide-react";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "../ui/select";
-import CustomButton from "../common/CustomButton";
-import moment from "moment";
-import { Input } from "../ui/input";
+import { Download, FileUp, MoreHorizontal } from "lucide-react";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Button } from "../ui/button";
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import CustomButton from "@/components/common/CustomButton";
+import moment from "moment";
+import { Button } from "@/components/ui/button";
+import { IDepartmentWithAudit } from "@/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSearchParams } from "react-router-dom";
+import SearchDepartmentInput from "@/components/departments/SearchDepartmentInput";
+import React, { useState } from "react";
+import {
+  rowsPerPageOptions,
+  getPage,
+  getRowsPerPage,
+  sortingOptions,
+  getSortingOption,
+} from "@/utils/paginationUtils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  PaginationState,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import useGetDepartments from "@/hooks/api/useGetDepartments";
+import { useDebounce } from "@/hooks/states/useDebounce";
+import { cn } from "@/lib/utils";
 
-const columns = ["Name", "Dean", "Courses", "Created At", "Created By", "Updated At", "Updated By"];
+const columns: ColumnDef<IDepartmentWithAudit>[] = [
+  {
+    accessorKey: "name",
+    header: "Department name",
+  },
+  {
+    accessorKey: "dean",
+    header: "Dean",
+    cell: ({ row }) => {
+      const dean = row.getValue("dean") as IDepartmentWithAudit["dean"];
 
-const departments = [
-  {
-    name: "Computer Science",
-    dean: "Dr. Jane Smith",
-    coursesCount: 20,
-    createdAt: "2020-01-01",
-    createdBy: "John Doe",
-    updatedAt: "2022-01-15",
-    updatedBy: "Jane Doe",
+      return (
+        <>
+          {dean ? (
+            <div className="flex items-center gap-x-3 justify-center">
+              <Avatar className="size-8">
+                <AvatarImage src={dean?.profileImage || ""} />
+                <AvatarFallback className="capitalize">
+                  {dean!.firstName[0] + dean!.lastName[0]}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start">
+                <span>{dean?.fullname}</span>
+                <span className="text-muted-foreground text-xs">{dean?.email}</span>
+              </div>
+            </div>
+          ) : (
+            "--"
+          )}
+        </>
+      );
+    },
   },
   {
-    name: "Mathematics",
-    dean: "Dr. John Taylor",
-    coursesCount: 15,
-    createdAt: "2020-02-01",
-    createdBy: "Bob Smith",
-    updatedAt: "2022-02-20",
-    updatedBy: "Alice Johnson",
+    accessorKey: "courseCount",
+    header: "Courses",
   },
   {
-    name: "Engineering",
-    dean: "Dr. Maria Rodriguez",
-    coursesCount: 25,
-    createdAt: "2020-03-01",
-    createdBy: "Mike Brown",
-    updatedAt: "2022-03-25",
-    updatedBy: "Emily Davis",
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: ({ row }) => <>{moment(row.getValue("createdAt")).format("LL")}</>,
   },
   {
-    name: "Physics",
-    dean: "Dr. David Lee",
-    coursesCount: 10,
-    createdAt: "2020-04-01",
-    createdBy: "David Lee",
-    updatedAt: "2022-04-15",
-    updatedBy: "Sophia Kim",
+    accessorKey: "createdBy",
+    header: "Created By",
+    cell: ({ row }) => {
+      const createdBy = row.getValue("createdBy") as IDepartmentWithAudit["createdBy"];
+
+      return (
+        <>
+          {createdBy ? (
+            <div className="flex items-center gap-x-3 justify-center">
+              <Avatar className="size-8">
+                <AvatarImage src={createdBy?.profileImage || ""} />
+                <AvatarFallback className="capitalize">
+                  {createdBy!.firstName[0] + createdBy!.lastName[0]}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start">
+                <span>{createdBy?.fullname}</span>
+                <span className="text-muted-foreground text-xs">{createdBy?.email}</span>
+              </div>
+            </div>
+          ) : (
+            "--"
+          )}
+        </>
+      );
+    },
   },
   {
-    name: "Biology",
-    dean: "Dr. Emily Chen",
-    coursesCount: 18,
-    createdAt: "2020-05-01",
-    createdBy: "Kevin White",
-    updatedAt: "2022-05-20",
-    updatedBy: "Olivia Martin",
+    accessorKey: "updatedAt",
+    header: "Updated At",
+    cell: ({ row }) => <>{moment(row.getValue("updatedAt")).format("LL")}</>,
   },
   {
-    name: "Chemistry",
-    dean: "Dr. James Davis",
-    coursesCount: 22,
-    createdAt: "2020-06-01",
-    createdBy: "James Davis",
-    updatedAt: "2022-06-15",
-    updatedBy: "Rebecca Brown",
+    accessorKey: "updatedBy",
+    header: "Created By",
+    cell: ({ row }) => {
+      const updatedBy = row.getValue("updatedBy") as IDepartmentWithAudit["updatedBy"];
+
+      return (
+        <>
+          {updatedBy ? (
+            <div className="flex items-center gap-x-3 justify-center">
+              <Avatar className="size-8">
+                <AvatarImage src={updatedBy?.profileImage || ""} />
+                <AvatarFallback className="capitalize">
+                  {updatedBy!.firstName[0] + updatedBy!.lastName[0]}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start">
+                <span>{updatedBy?.fullname}</span>
+                <span className="text-muted-foreground text-xs">{updatedBy?.email}</span>
+              </div>
+            </div>
+          ) : (
+            "--"
+          )}
+        </>
+      );
+    },
   },
   {
-    name: "Economics",
-    dean: "Dr. Sarah Taylor",
-    coursesCount: 12,
-    createdAt: "2020-07-01",
-    createdBy: "Sarah Taylor",
-    updatedAt: "2022-07-15",
-    updatedBy: "William Thompson",
-  },
-  {
-    name: "Business Administration",
-    dean: "Dr. Robert Johnson",
-    coursesCount: 28,
-    createdAt: "2020-08-01",
-    createdBy: "Robert Johnson",
-    updatedAt: "2022-08-20",
-    updatedBy: "Amanda Garcia",
-  },
-  {
-    name: "Environmental Science",
-    dean: "Dr. Richard Lee",
-    coursesCount: 8,
-    createdAt: "2020-09-01",
-    createdBy: "Richard Lee",
-    updatedAt: "2022-09-25",
-    updatedBy: "Elizabeth Kim",
-  },
-  {
-    name: "Psychology",
-    dean: "Dr. Elizabeth Hall",
-    coursesCount: 20,
-    createdAt: "2020-10-01",
-    createdBy: "Elizabeth Hall",
-    updatedAt: "2022-10-15",
-    updatedBy: "Michael Brown",
+    id: "actions",
+    cell: () => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ];
-const DepartmentsTable = () => {
+
+interface Props {
+  setTotalDepartments: (total: number) => void;
+}
+
+const DepartmentsTable = ({ setTotalDepartments }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  let totalPages = 0;
+
+  // query params
+  const search = searchParams.get("search") || "";
+  const debounceValue = useDebounce(search, 500);
+  const page = getPage(searchParams.get("page"));
+  const rowsPerPage = getRowsPerPage(searchParams.get("limit"));
+  const sortBy = getSortingOption(searchParams.get("sortBy"));
+
+  const { data, isLoading, isSuccess, isError, isFetching } = useGetDepartments({
+    search: debounceValue,
+    page,
+    limit: rowsPerPage,
+    sortBy,
+  });
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: rowsPerPage,
+  });
+
+  const table = useReactTable({
+    data: isSuccess ? data.departments : [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: { pagination },
+    autoResetAll: false,
+  });
+
+  const currentPage = getPage(searchParams.get("page"));
+
+  let paginationButtons: React.ReactNode;
+
+  if (isSuccess) {
+    setTotalDepartments(data.pagination.totalItems);
+    totalPages = data.pagination.totalPages;
+    paginationButtons = (
+      <>
+        <Button
+          disabled={!data.pagination.hasPreviousPage}
+          variant="outline"
+          onClick={() => {
+            setSearchParams({
+              search: searchParams.get("search") || "",
+              page: (currentPage - 1).toString(),
+              limit: searchParams.get("limit") || "10",
+              sortBy: searchParams.get("sortBy") || "",
+            });
+          }}
+        >
+          Previous
+        </Button>
+        <Button
+          disabled={!data.pagination.hasNextPage}
+          variant="outline"
+          onClick={() => {
+            setSearchParams({
+              search: searchParams.get("search") || "",
+              page: (currentPage + 1).toString(),
+              limit: searchParams.get("limit") || "10",
+              sortBy: searchParams.get("sortBy") || "",
+            });
+          }}
+        >
+          Next
+        </Button>
+      </>
+    );
+  }
+
+  if (isLoading || isError || isFetching) {
+    paginationButtons = (
+      <>
+        <Button variant="outline" disabled>
+          Previous
+        </Button>
+        <Button variant="outline" disabled>
+          Next
+        </Button>
+      </>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-y-10">
       <div className="flex items-center justify-between">
-        <CustomInput icon={Search} placeholder="Search department..." />
-        <div className="flex items-center gap-x-8">
-          <div className="flex items-center gap-x-4">
-            <span className="text-muted-foreground">Sort By:</span>
-            <Select defaultValue="name">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort course" />
+        <SearchDepartmentInput />
+        <div className="flex items-center gap-x-6">
+          <div className="flex items-center gap-x-2">
+            <span className="text-muted-foreground whitespace-nowrap">Sort By:</span>
+            <Select
+              disabled={isLoading || isError || isFetching}
+              value={sortBy}
+              onValueChange={(value) => {
+                table.setPageIndex(0);
+                setSearchParams({
+                  search: searchParams.get("search") || "",
+                  page: "1",
+                  limit: searchParams.get("limit") || "10",
+                  sortBy: value,
+                });
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sort departments" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name">Name (A-Z)</SelectItem>
-                <SelectItem value="date">Name (Z-A)</SelectItem>
+                {sortingOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -145,65 +305,109 @@ const DepartmentsTable = () => {
           </div>
         </div>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow className="h-16">
-            {columns.map((column) => (
-              <TableHead key={column} className="text-center">
-                {column}
-              </TableHead>
+      {isLoading && (
+        <Table className="border-none">
+          <TableBody>
+            {Array.from({ length: 11 }).map((_, i) => (
+              <TableRow key={i} className="hover:bg-transparent">
+                {Array.from({ length: columns.length }).map((_, i) => (
+                  <TableCell key={i.toString()} className="p-4">
+                    <Skeleton className="h-4 w-full" />
+                  </TableCell>
+                ))}
+                <TableCell></TableCell>
+              </TableRow>
             ))}
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {departments.map((department) => (
-            <TableRow key={department.name} className="h-16 text-center">
-              <TableCell>{department.name}</TableCell>
-              <TableCell>{department.dean}</TableCell>
-              <TableCell>{department.coursesCount}</TableCell>
-              <TableCell>{moment(department.createdAt).format("LL")}</TableCell>
-              <TableCell>{department.createdBy}</TableCell>
-              <TableCell>{moment(department.updatedAt).format("LL")}</TableCell>
-              <TableCell>{department.updatedBy}</TableCell>
-              <TableCell>
-                <Button variant="ghost" className="size-9">
-                  <Ellipsis />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      )}
+
+      {/* Success  */}
+      {isSuccess && (
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header, i) => (
+                  <TableHead
+                    key={header.id}
+                    className={cn({
+                      "text-center": i !== 0,
+                    })}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() ? "selected" : ""}
+                  className="h-16"
+                >
+                  {row.getVisibleCells().map((cell, i) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn({
+                        "text-center": i !== 0,
+                      })}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No records found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
       <div className="flex items-center justify-end mb-8">
-        <div className="flex items-center gap-x-2 mr-8">
-          <span className="text-muted-foreground whitespace-nowrap">Rows per page:</span>
-          <Input type="number" defaultValue={10} className="w-24" max="100" />
+        <div className="flex items-center gap-x-10">
+          <div className="flex items-center gap-x-2">
+            <span className="whitespace-nowrap">Rows per page</span>
+            <Select
+              disabled={isLoading || isError || isFetching}
+              defaultValue={rowsPerPage.toString()}
+              onValueChange={(value) => {
+                table.setPageSize(parseInt(value));
+                table.setPageIndex(0);
+                setSearchParams({
+                  search: searchParams.get("search") || "",
+                  page: getPage(searchParams.get("page")).toString(),
+                  limit: value,
+                  sortBy: searchParams.get("sortBy") || "",
+                });
+              }}
+            >
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder="10" />
+              </SelectTrigger>
+              <SelectContent>
+                {rowsPerPageOptions.map((option) => (
+                  <SelectItem key={option.toString()} value={option.toString()}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            Page {currentPage} of {totalPages}
+          </div>
+          <div className="flex gap-x-1">{paginationButtons}</div>
         </div>
-        <Pagination className="mx-0 w-min">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="/courses" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </div>
     </div>
   );

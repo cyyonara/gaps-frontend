@@ -3,27 +3,22 @@
 @tailwind utilities;
 
 * {
-  font-family: "Outfit";
 }
 
-h4 {
+h1 {
   font-size: 50px;
 }
 
-h3 {
+h2 {
   font-size: 35px;
 }
 
-h5 {
+h3 {
   font-size: 30px;
 }
 
-h6 {
+h4 {
   font-size: 25px;
-}
-
-p {
-  font-size: 13px;
 }
 
 /* @layer base {
@@ -118,7 +113,7 @@ p {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
+    --input: 0 0% 70.8%;
     --ring: 0 72.2% 50.6%;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
@@ -177,6 +172,15 @@ p {
     @apply border-border;
   }
 
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
   body {
     @apply bg-background text-foreground;
   }

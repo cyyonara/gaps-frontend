@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import Courses from "./pages/Courses";
-import Assessments from "./pages/dean/Assessments";
-import Profile from "./pages/dean/Profile";
-import RootLayout from "./components/layouts/RootLayout";
-import Dashboard from "./pages/admin/Dashboard";
+import LandingPage from "@/pages/LandingPage";
+import Courses from "@/pages/Courses";
+import Assessments from "@/pages/Assessments";
+import RootLayout from "@/components/layouts/RootLayout";
+import Dashboard from "@/pages/admin/Dashboard";
 import { useEffect } from "react";
-import useTheme from "./hooks/states/useTheme";
-import Departments from "./pages/Departments";
+import useTheme from "@/hooks/states/useTheme";
+import Departments from "@/pages/Departments";
+import Login2 from "@/pages/Login2";
+import AddAssessment from "@/pages/AddAssessment";
 
 const App = () => {
   const { theme } = useTheme();
@@ -24,13 +24,18 @@ const App = () => {
   return (
     <Routes>
       <Route index element={<LandingPage />} />
-      <Route path="login" element={<LoginPage />} />
+      <Route path="login" element={<Login2 />} />
       <Route element={<RootLayout />}>
-        <Route path="/dean/assessments" element={<Assessments />} />
-        <Route path="/dean/profile" element={<Profile />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/courses" element={<Courses />} />
+
         <Route path="/departments" element={<Departments />} />
+
+        <Route path="/assessments/*">
+          <Route index element={<Assessments />} />
+          <Route path="add" element={<AddAssessment />} />
+        </Route>
       </Route>
     </Routes>
   );
