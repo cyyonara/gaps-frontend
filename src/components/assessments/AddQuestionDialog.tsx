@@ -104,7 +104,7 @@ const AddQuestionDialog = () => {
               name="question"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Question #{questions.length + 1}</FormLabel>
+                  <FormLabel>Question {questions.length + 1}</FormLabel>
                   <FormControl>
                     <Textarea {...field} placeholder="Enter question...." />
                   </FormControl>
@@ -117,9 +117,9 @@ const AddQuestionDialog = () => {
                 {fields.map((optionField, index) => (
                   <div key={optionField.id} className="flex flex-col gap-y-2">
                     <Label htmlFor={optionField.id} className="text-muted-foreground text-sm">
-                      Option #{index + 1}
+                      Option {index + 1}
                     </Label>
-                    <div className="flex items-center gap-x-2">
+                    <div className="flex items-center">
                       <div className="relative flex-1">
                         <FormField
                           name={`options.${index}.isCorrectAnswer`}
@@ -137,7 +137,7 @@ const AddQuestionDialog = () => {
                           render={({ field }) => (
                             <Input
                               id={optionField.id}
-                              className="pl-[40px]"
+                              className="pl-[40px] rounded-r-none border-r-0"
                               {...field}
                               placeholder="Enter option label..."
                             />
@@ -147,7 +147,9 @@ const AddQuestionDialog = () => {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger type="button" onClick={() => deleteOption(index)}>
-                            <Trash size={15} className="text-primary" />
+                            <Button className="rounded-l-none">
+                              <Trash size={15} className="text-white" />
+                            </Button>
                           </TooltipTrigger>
                           <TooltipContent>Delete option</TooltipContent>
                         </Tooltip>

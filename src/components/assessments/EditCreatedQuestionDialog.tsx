@@ -119,9 +119,9 @@ const EditCreatedQuestionDialog = ({ question, options, index }: Props) => {
                 {fields.map((optionField, index) => (
                   <div key={optionField.id} className="flex flex-col gap-y-2">
                     <Label htmlFor={optionField.id} className="text-muted-foreground text-sm">
-                      Option #{index + 1}
+                      Option {index + 1}
                     </Label>
-                    <div className="flex items-center gap-x-2">
+                    <div className="flex items-center ">
                       <div className="relative flex-1">
                         <FormField
                           name={`options.${index}.isCorrectAnswer`}
@@ -130,7 +130,7 @@ const EditCreatedQuestionDialog = ({ question, options, index }: Props) => {
                               checked={field.value}
                               onCheckedChange={() => setCorrectAnswer(index)}
                               {...field}
-                              className="absolute left-[12px] top-[50%] -translate-y-[50%] border-muted-foreground"
+                              className="border-l-0 border-y-0 absolute h-9 w-9 top-[50%]  -translate-y-[50%] border-muted-foreground"
                             />
                           )}
                         />
@@ -139,7 +139,7 @@ const EditCreatedQuestionDialog = ({ question, options, index }: Props) => {
                           render={({ field }) => (
                             <Input
                               id={optionField.id}
-                              className="pl-[40px]"
+                              className="pl-[45px] rounded-r-none border-r-0"
                               {...field}
                               placeholder="Enter option label..."
                             />
@@ -149,7 +149,9 @@ const EditCreatedQuestionDialog = ({ question, options, index }: Props) => {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger type="button" onClick={() => deleteOption(index)}>
-                            <Trash size={15} className="text-primary" />
+                            <Button className="rounded-l-none">
+                              <Trash size={15} className="text-white" />
+                            </Button>
                           </TooltipTrigger>
                           <TooltipContent>Delete option</TooltipContent>
                         </Tooltip>

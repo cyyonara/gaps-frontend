@@ -8,11 +8,11 @@ const Home = () => {
         <div>
           <div>
             <div className="w-[1000px]">
-              <h4 className="font-bold leading-[55px]">
+              <span className="font-bold leading-[55px] text-[50px]">
                 Mastery Meets Merit – Certifying{" "}
                 <span className="text-primary"> Top-Tier Mentors</span> at Colegio de San Gabriel
                 Arcangel
-              </h4>
+              </span>
             </div>
             <div className="pt-5">
               <span className="text-primary tracking-wider">
@@ -34,9 +34,9 @@ const Home = () => {
 
         <div>{/* <div className="bg-primary w-[600px] h-[800px] blur-[350px]"></div> */}</div>
       </div>
-      <h5 className="absolute left-1/2 transform -translate-x-1/2 bottom-5 bg-primary mb-5 text-white font-medium  w-[70%] rounded-md p-10 flex justify-center">
+      <span className="text-[30px] absolute left-1/2 transform -translate-x-1/2 bottom-5 bg-primary mb-5 text-white font-medium  w-[70%] rounded-md p-10 flex justify-center">
         Designed for Excellence, Built with Care.
-      </h5>
+      </span>
     </div>
   );
 };
