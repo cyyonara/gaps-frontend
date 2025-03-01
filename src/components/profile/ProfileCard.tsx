@@ -4,7 +4,7 @@ import UpdateProfilePictureCard from "./UpdateProfilePictureCard";
 
 const ProfileCard = () => {
   return (
-    <Card className="flex flex-col items-center justify-between ">
+    <Card className="flex w-[30%] flex-col items-center justify-between ">
       <CardHeader>
         <div className="flex flex-col items-center">
           <Avatar className="size-44">

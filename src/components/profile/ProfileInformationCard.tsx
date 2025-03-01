@@ -9,20 +9,22 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import UpdatePasswordCard from "./UpdatePasswordCard";
+import useAuth from "@/hooks/states/useAuth";
 
 const ProfileInformationCard = () => {
+  const user = useAuth((state) => state.auth);
   const [editInfo, setEditInfo] = useState(false);
 
   const form = useForm<IAddUserFormValues>({
     defaultValues: {
-      email: "john.doe@example.com",
+      email: user!.email,
       password: "",
       confirmPassword: "",
-      firstName: "John",
-      middleName: "C",
-      lastName: "Doe",
-      suffix: "Jr.",
-      department: "Computer Studies",
+      firstName: user!.firstName,
+      middleName: user!.middleName ?? "",
+      lastName: user!.lastName,
+      suffix: user!.suffix ?? "",
+      department: user!.department,
     },
     resolver: zodResolver(addUserSchema),
   });
