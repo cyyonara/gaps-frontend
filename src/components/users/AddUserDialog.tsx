@@ -61,7 +61,7 @@ const AddUserDialog = () => {
   const { mutate: addUser, isPending } = useAddUser();
   const [isAddUserDialogOpen, setAddUserDialogOpen] = useState(false);
 
-  const onSubmit = (values: IAddUserFormValues) => {
+  const handleAddUser = (values: IAddUserFormValues) => {
     const { _id } = values.department as IDepartmentWithAudit;
     addUser(
       {
@@ -104,7 +104,11 @@ const AddUserDialog = () => {
           <DialogDescription>Fill out the form to add a user to the system.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form id="add-user-form" onSubmit={form.handleSubmit(onSubmit)} className="flex gap-x-4">
+          <form
+            id="add-user-form"
+            onSubmit={form.handleSubmit(handleAddUser)}
+            className="flex gap-x-4"
+          >
             <div className="flex flex-col w-full gap-y-4 flex-1 h-min">
               <FormField
                 control={form.control}
