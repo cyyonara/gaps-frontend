@@ -37,13 +37,15 @@ import SearchDepartmentDialog from "../departments/SearchDepartmentDialog";
 import { IAddUserFormValues, IDepartmentWithAudit, TUserRole } from "@/types";
 import CustomInput from "@/components/common/CustomInput";
 
+import useAddUser from "@/hooks/api/useAddUser";
+import { toast } from "sonner";
+
 const AddUserDialog = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
+  //const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<IAddUserFormValues>({
-    resolver: zodResolver(addUserSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -54,9 +56,36 @@ const AddUserDialog = () => {
       suffix: "",
       department: "",
     },
+    resolver: zodResolver(addUserSchema),
   });
+  const { mutate: addUser, isPending } = useAddUser();
+  const [isAddUserDialogOpen, setAddUserDialogOpen] = useState(false);
 
   const onSubmit = (values: IAddUserFormValues) => {
+    const { _id } = values.department as IDepartmentWithAudit;
+    addUser(
+      {
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        firstName: values.firstName,
+        middleName: values.middleName,
+        lastName: values.lastName,
+        suffix: values.suffix,
+        department: _id,
+        role: values.role,
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(`Account ${data.email} created successfully`);
+          form.reset();
+          setAddUserDialogOpen(false);
+        },
+        onError: (error) => {
+          toast.error(error.response?.data.message || "Internal server error");
+        },
+      },
+    );
     console.log(values);
   };
 
@@ -65,7 +94,7 @@ const AddUserDialog = () => {
   }, []);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isAddUserDialogOpen} onOpenChange={setAddUserDialogOpen}>
       <DialogTrigger asChild>
         <CustomButton icon={Plus}>Add User</CustomButton>
       </DialogTrigger>
@@ -193,6 +222,7 @@ const AddUserDialog = () => {
                       <FormLabel>Department (optional)</FormLabel>
                       <FormControl>
                         <SearchDepartmentDialog
+                          selectDisabled={isPending}
                           selectedDepartment={
                             field.value ? (field.value as IDepartmentWithAudit) : null
                           }
