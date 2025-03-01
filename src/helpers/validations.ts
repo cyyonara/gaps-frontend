@@ -113,3 +113,30 @@ export const addUserSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const updatePasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{8,}$/,
+        {
+          message:
+            "Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.",
+        },
+      ),
+    newPassword: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{8,}$/,
+        {
+          message:
+            "Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.",
+        },
+      ),
+    confirmPassword: z.string().min(1, { message: "Pkease confirm your password" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
