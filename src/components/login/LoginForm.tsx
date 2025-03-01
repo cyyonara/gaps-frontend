@@ -20,8 +20,8 @@ import { toast } from "sonner";
 function LoginForm() {
   const form = useForm<ILoginFields>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "villanuevacyrel30@gmail.com",
+      password: "cy.gaps2025",
     },
     resolver: zodResolver(loginSchema),
   });
