@@ -8,6 +8,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Image } from "lucide-react";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { D } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
+
 const UpdateProfilePictureCard = () => {
   const form = useForm<IAddUserFormValues>({
     defaultValues: {
@@ -26,17 +38,20 @@ const UpdateProfilePictureCard = () => {
   const handleUpdate = () => {};
 
   return (
-    <Card className="my-5">
-      <CardHeader>
-        <CardTitle>Update Profile Picture</CardTitle>
-        <CardDescription>Update your profile picture</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between py-0 border-none w-full ">
-          <div className="flex items-center gap-x-2 w-full">
-            <div className="flex flex-col w-full gap-y-4 flex-1 h-min">
+    <Dialog>
+      <DialogTrigger asChild>
+        <p className="mt-3 text-xs underline cursor-pointer">Upload Profile Picture</p>
+      </DialogTrigger>
+      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>Update Profile Picture</DialogTitle>
+          <DialogDescription> Update your account's profile picture</DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center justify-between w-full py-3 border-none ">
+          <div className="flex items-center w-full gap-x-2">
+            <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
-                <form className="mt-0 space-y-4 w-full" onSubmit={form.handleSubmit(handleUpdate)}>
+                <form className="w-full mt-0 space-y-4" onSubmit={form.handleSubmit(handleUpdate)}>
                   <FormField
                     control={form.control}
                     name="profileImage"
@@ -70,8 +85,8 @@ const UpdateProfilePictureCard = () => {
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -7,18 +7,22 @@ import { IAddUserFormValues } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import UpdatePasswordCard from "./UpdatePasswordCard";
 
 const ProfileInformationCard = () => {
+  const [editInfo, setEditInfo] = useState(false);
+
   const form = useForm<IAddUserFormValues>({
     defaultValues: {
-      email: "",
+      email: "john.doe@example.com",
       password: "",
       confirmPassword: "",
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      suffix: "",
-      department: "",
+      firstName: "John",
+      middleName: "C",
+      lastName: "Doe",
+      suffix: "Jr.",
+      department: "Computer Studies",
     },
     resolver: zodResolver(addUserSchema),
   });
@@ -29,17 +33,19 @@ const ProfileInformationCard = () => {
     form.setFocus("email");
   }, []);
   return (
-    <Card className="my-5">
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Profile Information</CardTitle>
-        <CardDescription>Update your account's profile information</CardDescription>
+        <CardDescription>
+          {editInfo ? "Update your profile information" : "View your profile information"}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between py-0 border-none w-full ">
-          <div className="flex items-center gap-x-2 w-full">
-            <div className="flex flex-col w-full gap-y-4 flex-1 h-min">
+        <div className="flex items-center justify-between w-full py-0 border-none ">
+          <div className="flex items-center w-full gap-x-2">
+            <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
-                <form className="mt-0 space-y-4 w-full" onSubmit={form.handleSubmit(handleUpdate)}>
+                <form className="w-full mt-0 space-y-4" onSubmit={form.handleSubmit(handleUpdate)}>
                   <FormField
                     control={form.control}
                     name="email"
@@ -47,7 +53,7 @@ const ProfileInformationCard = () => {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Your Email" />
+                          <Input {...field} placeholder="Your Email" disabled={!editInfo} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -60,7 +66,7 @@ const ProfileInformationCard = () => {
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Your First Name" />
+                          <Input {...field} placeholder="Your First Name" disabled={!editInfo} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -73,7 +79,11 @@ const ProfileInformationCard = () => {
                       <FormItem>
                         <FormLabel>Middle Name</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Middle Initial Only" />
+                          <Input
+                            {...field}
+                            placeholder="Middle Initial Only"
+                            disabled={!editInfo}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -86,7 +96,7 @@ const ProfileInformationCard = () => {
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Your Last Name" />
+                          <Input {...field} placeholder="Your Last Name" disabled={!editInfo} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -99,13 +109,20 @@ const ProfileInformationCard = () => {
                       <FormItem>
                         <FormLabel>Suffix</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Optional" />
+                          <Input {...field} placeholder="Optional" disabled={!editInfo} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Update</Button>
+                  <div className="flex gap-x-2">
+                    <div>
+                      <Button onClick={() => setEditInfo(!editInfo)} type="submit">
+                        {editInfo ? "Update" : "Edit"}
+                      </Button>
+                    </div>
+                    <UpdatePasswordCard />
+                  </div>
                 </form>
               </Form>
             </div>
