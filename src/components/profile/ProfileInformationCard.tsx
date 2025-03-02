@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { addUserSchema } from "@/helpers/validations";
-import { IAddUserFormValues } from "@/types";
+import { IUpdateFormValues } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -11,25 +11,35 @@ import { useState } from "react";
 import UpdatePasswordCard from "./UpdatePasswordCard";
 import useAuth from "@/hooks/states/useAuth";
 
+import useUpdateProfile from "@/hooks/api/useUpdateProfile";
+import { toast } from "sonner";
+
 const ProfileInformationCard = () => {
   const user = useAuth((state) => state.auth);
   const [editInfo, setEditInfo] = useState(false);
 
-  const form = useForm<IAddUserFormValues>({
+  const form = useForm<IUpdateFormValues>({
     defaultValues: {
       email: user!.email,
-      password: "",
-      confirmPassword: "",
       firstName: user!.firstName,
       middleName: user!.middleName ?? "",
       lastName: user!.lastName,
       suffix: user!.suffix ?? "",
-      department: user!.department,
     },
     resolver: zodResolver(addUserSchema),
   });
 
-  const handleUpdate = () => {};
+  const { mutate: updateProfile } = useUpdateProfile();
+
+  const handleUpdateProfile = (values: IUpdateFormValues) => {
+    //console.log(values);
+    console.log("Hello");
+  };
+
+  const handleUpdateProfile2 = () => {
+    //console.log(values);
+    console.log("Hello");
+  };
 
   useEffect(() => {
     form.setFocus("email");
@@ -44,10 +54,14 @@ const ProfileInformationCard = () => {
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between w-full py-0 border-none ">
+          <button onClick={() => handleUpdateProfile2()}>awdawawwd</button>
           <div className="flex items-center w-full gap-x-2">
             <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
-                <form className="w-full mt-0 space-y-4" onSubmit={form.handleSubmit(handleUpdate)}>
+                <form
+                  onSubmit={form.handleSubmit(handleUpdateProfile)}
+                  className="w-full mt-0 space-y-4"
+                >
                   <FormField
                     control={form.control}
                     name="email"
@@ -119,7 +133,7 @@ const ProfileInformationCard = () => {
                   />
                   <div className="flex gap-x-2">
                     <div>
-                      <Button onClick={() => setEditInfo(!editInfo)} type="submit">
+                      <Button type="submit" onClick={() => setEditInfo(!editInfo)}>
                         {editInfo ? "Update" : "Edit"}
                       </Button>
                     </div>

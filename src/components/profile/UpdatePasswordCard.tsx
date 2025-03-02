@@ -33,6 +33,7 @@ const UpdatePasswordCard = () => {
   });
 
   const handleUpdate = () => {
+    console.log(form);
     form.reset();
   };
 

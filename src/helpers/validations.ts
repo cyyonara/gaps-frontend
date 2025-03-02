@@ -114,6 +114,19 @@ export const addUserSchema = z
     path: ["confirmPassword"],
   });
 
+export const updateProfileSchema = z.object({
+  email: z.string().email(),
+  firstName: z.string().min(1),
+  middleName: z
+    .string()
+    .min(1, { message: "Middle Name is required" })
+    .max(2, { message: "Middle Name must be at most 2 characters long" })
+    .toUpperCase()
+    .optional(),
+  lastName: z.string().min(1),
+  suffix: z.string().optional(),
+});
+
 export const updatePasswordSchema = z
   .object({
     password: z
