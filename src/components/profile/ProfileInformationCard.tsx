@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "../ui/form";
 import { Input } from "../ui/input";
-import { addUserSchema } from "@/helpers/validations";
+import { addUserSchema, updateProfileSchema } from "@/helpers/validations";
 import { IUpdateFormValues } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -26,13 +26,13 @@ const ProfileInformationCard = () => {
       lastName: user!.lastName,
       suffix: user!.suffix ?? "",
     },
-    resolver: zodResolver(addUserSchema),
+    resolver: zodResolver(updateProfileSchema),
   });
 
   const { mutate: updateProfile } = useUpdateProfile();
 
   const handleUpdateProfile = (values: IUpdateFormValues) => {
-    //console.log(values);
+    console.log(values);
     console.log("Hello");
   };
 
