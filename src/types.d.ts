@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
-import { addUserSchema } from "./helpers/validations";
+import { addUserSchema, updatePasswordSchema, updateProfileSchema } from "./helpers/validations";
 
 // API
 interface IResponse<T> {
@@ -108,6 +108,10 @@ interface IAddQuestionFormValues {
 type TUserRole = "mentor" | "dean" | "admin";
 
 interface IAddUserFormValues extends z.infer<typeof addUserSchema> {}
+
+interface IUpdateFormValues extends z.infer<typeof updateProfileSchema> {}
+
+interface IUpdatePasswordValues extends z.infer<typeof updatePasswordSchema> {}
 
 interface IUser {
   _id: string;

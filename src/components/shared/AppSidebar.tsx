@@ -1,4 +1,4 @@
-import { LayoutDashboard, Book, Building, NotepadText, Users } from "lucide-react";
+import { LayoutDashboard, Book, Building, NotepadText, Users, Camera } from "lucide-react";
 import { NavMain } from "@/components/sidebar/NavMain";
 import { NavUser } from "@/components/sidebar/NavUser";
 import {
@@ -38,6 +38,11 @@ const data = {
       title: "Users",
       url: "/users",
       icon: Users,
+    },
+    {
+      title: "Profile",
+      url: "/profile",
+      icon: Camera,
     },
   ],
 };

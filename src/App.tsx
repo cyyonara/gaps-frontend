@@ -8,6 +8,7 @@ import Dashboard from "@/pages/Dashboard";
 import useTheme from "@/hooks/states/useTheme";
 import Departments from "@/pages/Departments";
 import Users from "@/pages/Users";
+import Profile from "./pages/Profile";
 import Login2 from "@/pages/Login2";
 import AddAssessment from "@/pages/AddAssessment";
 
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/departments" element={<Departments />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );
