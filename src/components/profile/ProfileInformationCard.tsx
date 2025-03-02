@@ -54,7 +54,6 @@ const ProfileInformationCard = () => {
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between w-full py-0 border-none ">
-          <button onClick={() => handleUpdateProfile2()}>awdawawwd</button>
           <div className="flex items-center w-full gap-x-2">
             <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
