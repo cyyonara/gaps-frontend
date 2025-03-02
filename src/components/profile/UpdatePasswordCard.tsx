@@ -17,6 +17,7 @@ import {
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "../ui/form";
 import { useState } from "react";
 import { D } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
+import useUpdatePassword from "@/hooks/api/useUpdatePassword";
 
 const UpdatePasswordCard = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -32,9 +33,14 @@ const UpdatePasswordCard = () => {
     resolver: zodResolver(updatePasswordSchema),
   });
 
-  const handleUpdate = () => {
-    console.log(form);
-    form.reset();
+  const { mutate: updatePassword } = useUpdatePassword();
+
+  const handleUpdate = (values: IUpdatePasswordValues) => {
+    updatePassword({
+      password: values.password,
+      newPassword: values.newPassword,
+      confirmPassword: values.confirmPassword,
+    });
   };
 
   return (

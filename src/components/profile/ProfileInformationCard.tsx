@@ -43,11 +43,6 @@ const ProfileInformationCard = () => {
     }
   };
 
-  const handleUpdateProfile2 = () => {
-    //console.log(values);
-    console.log("Hello");
-  };
-
   useEffect(() => {
     form.setFocus("email");
   }, []);
