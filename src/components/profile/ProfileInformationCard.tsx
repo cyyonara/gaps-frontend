@@ -32,8 +32,15 @@ const ProfileInformationCard = () => {
   const { mutate: updateProfile } = useUpdateProfile();
 
   const handleUpdateProfile = (values: IUpdateFormValues) => {
-    console.log(values);
-    console.log("Hello");
+    if (!editInfo) {
+      updateProfile({
+        email: values.email,
+        firstName: values.firstName,
+        middleName: values.middleName,
+        lastName: values.lastName,
+        suffix: values.suffix,
+      });
+    }
   };
 
   const handleUpdateProfile2 = () => {
