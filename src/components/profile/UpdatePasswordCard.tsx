@@ -5,9 +5,20 @@ import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import CustomInput from "../common/CustomInput";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "../ui/form";
 import { useState } from "react";
+import { D } from "node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o";
+import useUpdatePassword from "@/hooks/api/useUpdatePassword";
+import { toast } from "sonner";
 
 const UpdatePasswordCard = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -23,22 +34,46 @@ const UpdatePasswordCard = () => {
     resolver: zodResolver(updatePasswordSchema),
   });
 
-  const handleUpdate = () => {};
+  const { mutate: updatePassword } = useUpdatePassword();
+
+  const handleUpdatePassword = (values: IUpdatePasswordValues) => {
+    updatePassword(
+      {
+        password: values.password,
+        newPassword: values.newPassword,
+        confirmPassword: values.confirmPassword,
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(`Account's password updated successfully`);
+          form.reset();
+        },
+        onError: (error) => {
+          toast.error(error.response?.data.message || "Internal server error");
+        },
+      },
+    );
+  };
 
   return (
-    <Card className="my-5">
-      <CardHeader>
-        <CardTitle>Update Password</CardTitle>
-        <CardDescription>
-          Ensure your account is using a long, random password to stay secure
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between py-0 border-none w-full ">
-          <div className="flex items-center gap-x-2 w-full">
-            <div className="flex flex-col w-full gap-y-4 flex-1 h-min">
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Update Password</Button>
+      </DialogTrigger>
+      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>Update Password</DialogTitle>
+          <DialogDescription>Update your password</DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center justify-between w-full py-0 border-none ">
+          <div className="flex items-center w-full gap-x-2">
+            <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
-                <form className="mt-0 space-y-4 w-full" onSubmit={form.handleSubmit(handleUpdate)}>
+                <form
+                  id="update-pasword"
+                  className="w-full mt-0 space-y-4"
+                  onSubmit={form.handleSubmit(handleUpdatePassword)}
+                >
                   <FormField
                     control={form.control}
                     name="password"
@@ -99,14 +134,16 @@ const UpdatePasswordCard = () => {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Update</Button>
+                  <Button form="update-pasword" type="submit">
+                    Update
+                  </Button>
                 </form>
               </Form>
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 

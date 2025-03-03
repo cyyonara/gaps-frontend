@@ -21,7 +21,7 @@ function LoginForm() {
   const form = useForm<ILoginFields>({
     defaultValues: {
       email: "villanuevacyrel30@gmail.com",
-      password: "cy.gaps2025",
+      password: "Cy.gaps2025",
     },
     resolver: zodResolver(loginSchema),
   });
