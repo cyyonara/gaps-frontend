@@ -33,13 +33,24 @@ const ProfileInformationCard = () => {
 
   const handleUpdateProfile = (values: IUpdateFormValues) => {
     if (!editInfo) {
-      updateProfile({
-        email: values.email,
-        firstName: values.firstName,
-        middleName: values.middleName,
-        lastName: values.lastName,
-        suffix: values.suffix,
-      });
+      updateProfile(
+        {
+          email: values.email,
+          firstName: values.firstName,
+          middleName: values.middleName,
+          lastName: values.lastName,
+          suffix: values.suffix,
+        },
+        {
+          onSuccess: (data) => {
+            toast.success(`Account ${data.email} Updated successfully`);
+            form.reset();
+          },
+          onError: (error) => {
+            toast.error(error.response?.data.message || "Internal server error");
+          },
+        },
+      );
     }
   };
 
@@ -60,6 +71,7 @@ const ProfileInformationCard = () => {
             <div className="flex flex-col flex-1 w-full gap-y-4 h-min">
               <Form {...form}>
                 <form
+                  id="update-profile"
                   onSubmit={form.handleSubmit(handleUpdateProfile)}
                   className="w-full mt-0 space-y-4"
                 >
@@ -132,16 +144,20 @@ const ProfileInformationCard = () => {
                       </FormItem>
                     )}
                   />
-                  <div className="flex gap-x-2">
-                    <div>
-                      <Button type="submit" onClick={() => setEditInfo(!editInfo)}>
-                        {editInfo ? "Update" : "Edit"}
-                      </Button>
-                    </div>
-                    <UpdatePasswordCard />
-                  </div>
                 </form>
               </Form>
+              <div className="flex gap-x-2">
+                <div>
+                  <Button
+                    form="update-profile"
+                    type="submit"
+                    onClick={() => setEditInfo(!editInfo)}
+                  >
+                    {editInfo ? "Update" : "Edit"}
+                  </Button>
+                </div>
+                <UpdatePasswordCard />
+              </div>
             </div>
           </div>
         </div>
