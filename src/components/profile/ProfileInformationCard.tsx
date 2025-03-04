@@ -17,6 +17,7 @@ import { toast } from "sonner";
 const ProfileInformationCard = () => {
   const user = useAuth((state) => state.auth);
   const [editInfo, setEditInfo] = useState(false);
+  const setCredentials = useAuth((state) => state.setCredentials);
 
   const form = useForm<IUpdateFormValues>({
     defaultValues: {
@@ -43,11 +44,13 @@ const ProfileInformationCard = () => {
         },
         {
           onSuccess: (data) => {
+            setCredentials(data);
+            form.reset(values);
             toast.success(`Account ${data.email} Updated successfully`);
-            form.reset();
           },
           onError: (error) => {
             toast.error(error.response?.data.message || "Internal server error");
+            form.reset();
           },
         },
       );
@@ -151,7 +154,12 @@ const ProfileInformationCard = () => {
                   <Button
                     form="update-profile"
                     type="submit"
-                    onClick={() => setEditInfo(!editInfo)}
+                    onClick={() => {
+                      if (!form.control) {
+                        console.log("bobo");
+                      }
+                      setEditInfo(!editInfo);
+                    }}
                   >
                     {editInfo ? "Update" : "Edit"}
                   </Button>
