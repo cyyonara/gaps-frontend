@@ -6,17 +6,20 @@ import { addUserSchema, updateProfileSchema } from "@/helpers/validations";
 import { IUpdateFormValues } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { useState } from "react";
 import UpdatePasswordCard from "./UpdatePasswordCard";
 import useAuth from "@/hooks/states/useAuth";
 
 import useUpdateProfile from "@/hooks/api/useUpdateProfile";
 import { toast } from "sonner";
+import { isValid } from "date-fns";
 
 const ProfileInformationCard = () => {
   const user = useAuth((state) => state.auth);
   const [editInfo, setEditInfo] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const setCredentials = useAuth((state) => state.setCredentials);
 
   const form = useForm<IUpdateFormValues>({
     defaultValues: {
@@ -31,6 +34,8 @@ const ProfileInformationCard = () => {
 
   const { mutate: updateProfile } = useUpdateProfile();
 
+  //console.log(updateProfileSchema);
+
   const handleUpdateProfile = (values: IUpdateFormValues) => {
     if (!editInfo) {
       updateProfile(
@@ -43,11 +48,13 @@ const ProfileInformationCard = () => {
         },
         {
           onSuccess: (data) => {
+            setCredentials(data);
+            form.reset(values);
             toast.success(`Account ${data.email} Updated successfully`);
-            form.reset();
           },
           onError: (error) => {
             toast.error(error.response?.data.message || "Internal server error");
+            form.reset();
           },
         },
       );
@@ -57,6 +64,9 @@ const ProfileInformationCard = () => {
   useEffect(() => {
     form.setFocus("email");
   }, []);
+
+  console.log(form.formState.isValid);
+
   return (
     <Card className="flex-1">
       <CardHeader>
@@ -150,8 +160,15 @@ const ProfileInformationCard = () => {
                 <div>
                   <Button
                     form="update-profile"
+                    disabled={edit}
                     type="submit"
-                    onClick={() => setEditInfo(!editInfo)}
+                    onClick={() => {
+                      if (!form.formState.isValid) {
+                        setEditInfo(editInfo);
+                      } else {
+                        setEditInfo(!editInfo);
+                      }
+                    }}
                   >
                     {editInfo ? "Update" : "Edit"}
                   </Button>
